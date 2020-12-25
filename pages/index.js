@@ -2,11 +2,14 @@ import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { getSortedPostsData } from "../lib/posts";
+import Link from "next/link";
+import Date from "../components/date";
+
 // import someDatabaseSDK from 'someDatabaseSDK' // if Database
 // const databaseClient = someDatabaseSDK.createClient(...)
 
 // if it is a SSR instead of getStaticProps use getServerSideProps with parameter context or ctx
-// export async function getServerSideProps(context) { 
+// export async function getServerSideProps(context) {
 //   return {
 //     props: {
 //       // props for your component
@@ -22,7 +25,6 @@ import { getSortedPostsData } from "../lib/posts";
 //   if (!data) return <div>loading...</div>
 //   return <div>hello {data.name}!</div>
 // }
-
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -55,11 +57,13 @@ export default function Home({ allPostsData }) {
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
               <br />
-              {id}
-              <br />
-              {date}
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
             </li>
           ))}
         </ul>
